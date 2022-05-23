@@ -234,6 +234,10 @@ nav {
 .cart-count.show {
   display: flex;
 }
+/* mobile */
+.mobile-image {
+    display:none;
+}
 
 /* section */
 section {
@@ -523,6 +527,7 @@ section {
   }
 
   .mobile-image {
+      display: block;
     position: relative;
     background-image: url('./images/image-product-1.jpg');
     background-repeat: no-repeat;
