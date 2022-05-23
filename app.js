@@ -35,6 +35,7 @@ addBtn.addEventListener('click', () => {
     checkoutBtn.classList.remove('show')
     localStorage.clear()
     empty.classList.remove('hide')
+    cartCount.classList.remove('show')
     renderCart()
     return
   }
@@ -81,7 +82,7 @@ function renderCart() {
       checkoutBtn.classList.remove('show')
       empty.classList.remove('hide')
       count = 0
-      cartCount.innerHTML = count
+      cartCount.classList.remove('show')
     })
   } else {
     items.innerHTML = ''
