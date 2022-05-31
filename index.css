@@ -166,7 +166,7 @@ nav {
 .underline {
   height: 3px;
   position: absolute;
-  top: 96%;
+  top: 97%;
   background-color: var(--clr-orange);
 }
 .nav-left {
