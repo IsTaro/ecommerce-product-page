@@ -31,7 +31,6 @@ let addCount = 0
 let total = 0 // cartItem's total quantity
 let index = 1
 let list = []
-let thumbnailId = 1
 
 const listFromLocalStorage = JSON.parse(localStorage.getItem('list'))
 
@@ -160,6 +159,12 @@ mobilePrev.addEventListener('click', () => {
     index--
   }
   mobileImage.style.backgroundImage = `url(./images/image-product-${index}.jpg)`
+  bigImg.src = `./images/image-product-${index}.jpg`
+
+  thumnails.forEach((thumnail) => {
+    thumnail.classList.remove('hold')
+  })
+  // thumnails[index - 1].classList.add('hold')
 })
 
 next.addEventListener('click', () => {
@@ -182,6 +187,16 @@ mobileNext.addEventListener('click', () => {
     index++
   }
   mobileImage.style.backgroundImage = `url(./images/image-product-${index}.jpg)`
+  bigImg.src = `./images/image-product-${index}.jpg`
+
+  thumnails.forEach((thumnail) => {
+    thumnail.classList.remove('hold')
+  })
+  // log(thumnails[index-1])
+  // thumnails[index - 1].classList.add('hold')
+  // log(thumnails[index - 1])
+
+
 })
 
 nav.addEventListener('mouseover', (e) => {
@@ -199,8 +214,8 @@ nav.addEventListener('mouseover', (e) => {
 
 bigImg.addEventListener('click', () => {
   aside.classList.add('show')
-  asideBigImg.src= bigImg.src
-  asideThumnails[thumbnailId-1].classList.add('hold')
+  asideBigImg.src = bigImg.src
+  asideThumnails[index - 1].classList.add('hold')
 })
 
 window.addEventListener('resize', () => {
@@ -224,9 +239,9 @@ images.addEventListener('click', (e) => {
     })
     bigImg.src = `./images/image-product-${id}.jpg`
     e.target.classList.add('hold')
-    thumbnailId=id
+    index = id
+    mobileImage.style.backgroundImage = `url('./images/image-product-${index}.jpg')`
   }
-  
 })
 
 aside.addEventListener('click', (e) => {
