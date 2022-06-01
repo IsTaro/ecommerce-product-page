@@ -190,9 +190,12 @@ bigImg.addEventListener('click', () => {
   aside.classList.add('show')
 })
 window.addEventListener('resize', () => {
+  if (window.innerWidth <= 620) {
+    aside.classList.remove('show')
+  }
+
   const names = [...document.querySelectorAll('.name')]
   if (window.innerWidth <= 400) {
-    aside.classList.remove('show')
     names.forEach((name) => (name.innerHTML = `autumn limited edition...`))
   } else {
     names.forEach((name) => (name.innerHTML = `fall limited edition sneakers`))
@@ -223,4 +226,3 @@ aside.addEventListener('click', (e) => {
     aside.classList.remove('show')
   }
 })
-
