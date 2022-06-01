@@ -115,6 +115,7 @@ a {
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  margin-bottom: 0.5rem;
 }
 .item img {
   width: 50px;

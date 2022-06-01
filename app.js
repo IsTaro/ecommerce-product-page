@@ -27,67 +27,91 @@ const mobileImage = document.querySelector('.mobile-image')
 const mobileNext = document.querySelector('.mobile-next')
 const mobilePrev = document.querySelector('.mobile-prev')
 
-let count = 0
+let addCount = 0
+let total = 0 // cartItem's total quantity
 let index = 1
+let list = []
 
-addBtn.addEventListener('click', () => {
-  if (count === 0) {
-    checkoutBtn.classList.remove('show')
-    localStorage.clear()
-    empty.classList.remove('hide')
-    cartCount.classList.remove('show')
-    renderCart()
-    return
-  }
+const listFromLocalStorage = JSON.parse(localStorage.getItem('list'))
+
+if (listFromLocalStorage) {
+  list = listFromLocalStorage
+  renderCart(list)
+  list.map((obj) => {
+    total += obj.quantity
+  })
+  cartCount.innerHTML = total
+  cartCount.classList.add('show')
   empty.classList.add('hide')
   checkoutBtn.classList.add('show')
-  cartCount.innerHTML = count
+}
+
+addBtn.addEventListener('click', () => {
+  if (addCount === 0) return
+
+  empty.classList.add('hide')
+  checkoutBtn.classList.add('show')
+  total += addCount
+  cartCount.innerHTML = total
   cartCount.classList.add('show')
 
-  const sneakers = {
+  const sneaker = {
     img: './images/image-product-1-thumbnail.jpg',
     name: 'fall limited edition sneakers',
     price: 125.0,
-    quantity: count,
+    quantity: addCount,
     id: new Date().getTime().toString(),
   }
-  localStorage.setItem('list', JSON.stringify(sneakers))
-  renderCart()
+
+  list.push(sneaker)
+  localStorage.setItem('list', JSON.stringify(list))
+  renderCart(list)
 })
 
 cartBox.addEventListener('click', (e) => {
   cart.classList.toggle('show')
 })
 
-
-function renderCart() {
-  const list = JSON.parse(localStorage.getItem('list'))
-  if (list) {
-    items.innerHTML = `<div class="item">
-        <img src=${list.img} />
+function renderCart(list) {
+  const cartList = list
+    .map((object) => {
+      return `<div class="item">
+        <img src=${object.img} />
         <div class="title">
-        <p class="name">${list.name}</p>
-        <p>${`$${list.price}.00`} x ${list.quantity}<span>${`$${
-      list.price * list.quantity
-    }.00`}
+        <p class="name">${object.name}</p>
+        <p>${`$${object.price}.00`} x ${object.quantity}<span>${`$${
+        object.price * object.quantity
+      }.00`}
   </span></p>
         </div>
-        <i class="bi bi-trash"></i>
+        <i class="bi bi-trash" id=${object.id} data-quantity=${
+        object.quantity
+      }></i>
       </div>`
+    })
+    .join('')
 
-    const trash = document.querySelector('.bi-trash')
-    trash.addEventListener('click', () => {
+  items.innerHTML = cartList
+}
+
+cart.addEventListener('click', (e) => {
+  if (e.target.classList.contains('bi-trash')) {
+    const filterList = JSON.parse(localStorage.getItem('list')).filter(
+      (obj) => obj.id !== e.target.id
+    )
+    total -= e.target.dataset.quantity
+    cartCount.innerHTML = total
+    list = filterList
+    localStorage.setItem('list', JSON.stringify(list))
+    renderCart(list)
+    if (list.length === 0) {
       localStorage.clear()
-      items.innerHTML = ''
       checkoutBtn.classList.remove('show')
       empty.classList.remove('hide')
-      count = 0
       cartCount.classList.remove('show')
-    })
-  } else {
-    items.innerHTML = ''
+    }
   }
-}
+})
 
 menu.addEventListener('click', () => {
   sidebar.classList.add('show')
@@ -101,14 +125,14 @@ sidebar.addEventListener('click', (e) => {
 })
 
 minus.addEventListener('click', () => {
-  if (count <= 0) return
-  count--
-  quantity.innerHTML = count
+  if (addCount <= 0) return
+  addCount--
+  quantity.innerHTML = addCount
 })
 
 plus.addEventListener('click', () => {
-  count++
-  quantity.innerHTML = count
+  addCount++
+  quantity.innerHTML = addCount
 })
 
 times.addEventListener('click', () => {
@@ -165,14 +189,13 @@ nav.addEventListener('mouseover', (e) => {
 bigImg.addEventListener('click', () => {
   aside.classList.add('show')
 })
-
 window.addEventListener('resize', () => {
-  const name = document.querySelector('.name')
-  if (window.innerWidth <= 620) {
+  const names = [...document.querySelectorAll('.name')]
+  if (window.innerWidth <= 400) {
     aside.classList.remove('show')
-    name.innerHTML = `autumn limited edition...`
+    names.forEach((name) => (name.innerHTML = `autumn limited edition...`))
   } else {
-    name.innerHTML = `fall limited edition sneakers`
+    names.forEach((name) => (name.innerHTML = `fall limited edition sneakers`))
   }
 })
 
@@ -200,3 +223,4 @@ aside.addEventListener('click', (e) => {
     aside.classList.remove('show')
   }
 })
+
