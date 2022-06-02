@@ -1,6 +1,6 @@
 const { log } = console
 
-const thumnails = [...document.querySelectorAll('.thumnails img')]
+const thumnails = [...document.querySelectorAll('.images .thumnails img')]
 const bigImg = document.querySelector('.image-big')
 const nav = document.querySelector('nav')
 const underline = document.querySelector('.underline')
@@ -55,7 +55,7 @@ addBtn.addEventListener('click', () => {
   cartCount.innerHTML = total
   cartCount.classList.add('show')
 
-  const sneaker = {
+  const sneakers = {
     img: './images/image-product-1-thumbnail.jpg',
     name: 'fall limited edition sneakers',
     price: 125.0,
@@ -63,7 +63,7 @@ addBtn.addEventListener('click', () => {
     id: new Date().getTime().toString(),
   }
 
-  list.push(sneaker)
+  list.push(sneakers)
   localStorage.setItem('list', JSON.stringify(list))
   renderCart(list)
 })
@@ -152,20 +152,6 @@ prev.addEventListener('click', () => {
   })
   asideThumnails[index - 1].classList.add('hold')
 })
-mobilePrev.addEventListener('click', () => {
-  if (index <= 1) {
-    index = 4
-  } else {
-    index--
-  }
-  mobileImage.style.backgroundImage = `url(./images/image-product-${index}.jpg)`
-  bigImg.src = `./images/image-product-${index}.jpg`
-
-  thumnails.forEach((thumnail) => {
-    thumnail.classList.remove('hold')
-  })
-  // thumnails[index - 1].classList.add('hold')
-})
 
 next.addEventListener('click', () => {
   if (index >= 4) {
@@ -180,6 +166,22 @@ next.addEventListener('click', () => {
   })
   asideThumnails[index - 1].classList.add('hold')
 })
+
+mobilePrev.addEventListener('click', () => {
+  if (index <= 1) {
+    index = 4
+  } else {
+    index--
+  }
+  mobileImage.style.backgroundImage = `url(./images/image-product-${index}.jpg)`
+  bigImg.src = `./images/image-product-${index}.jpg`
+
+  thumnails.forEach((thumnail) => {
+    thumnail.classList.remove('hold')
+  })
+  thumnails[index - 1].classList.add('hold')
+})
+
 mobileNext.addEventListener('click', () => {
   if (index >= 4) {
     index = 1
@@ -192,18 +194,15 @@ mobileNext.addEventListener('click', () => {
   thumnails.forEach((thumnail) => {
     thumnail.classList.remove('hold')
   })
-  // log(thumnails[index-1])
-  // thumnails[index - 1].classList.add('hold')
-  // log(thumnails[index - 1])
-
-
+  thumnails[index-1].classList.add('hold')
 })
+
+
 
 nav.addEventListener('mouseover', (e) => {
   if (e.target.classList.contains('link')) {
     const rect = e.target.getBoundingClientRect()
     const navRect = nav.getBoundingClientRect()
-    // const center = (rect.left+rect.right)/2
     const width = rect.width
     underline.style.width = `${width}px`
     underline.style.left = `${rect.left - navRect.left}px`
@@ -215,6 +214,9 @@ nav.addEventListener('mouseover', (e) => {
 bigImg.addEventListener('click', () => {
   aside.classList.add('show')
   asideBigImg.src = bigImg.src
+  asideThumnails.forEach((item) => {
+    item.classList.remove('hold')
+  })
   asideThumnails[index - 1].classList.add('hold')
 })
 
